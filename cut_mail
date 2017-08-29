@@ -1,0 +1,33 @@
+#!/bin/sh
+## cut_mail for cut_mail in /home/rodrigue.rene/Cours/Semestre_3/SCRIPT_BASH/SHL_2016_shell/rodrigue
+## 
+## Made by Rodrigue RENE
+## Login   <rodrigue.rene@epitech.net>
+## 
+## Started on  Mon Jan  2 15:59:47 2017 Rodrigue RENE
+## Last update Tue Jan  3 20:04:26 2017 Gregoire Renard
+##
+
+if [ $# -eq 0 ]
+   then
+   echo -e "USAGE: $0 mbox destdir">&2
+   exit 1
+fi
+
+cat $1 | (
+    idx=0
+    mkdir -p $2
+    IFS=" "
+    while read line;
+    do
+	if [[ $line =~ ^From\  ]] ;
+	then idx=$[idx+1];
+	     echo -e $line > $2/$idx.mail;
+	else
+	    echo -e $line >> $2/$idx.mail;
+	fi;
+    done;
+    	    sed -i '$d' $2/*.mail;
+    echo -e $idx mail found
+    exit 0
+)

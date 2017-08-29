@@ -1,0 +1,57 @@
+#!/bin/sh
+## primaryary for primaryary in /home/renard_e/2/SHL_2016_shell
+## 
+## Made by Gregoire Renard
+## Login   <renard_e@epverifech.net>
+## 
+## Started on  Tue Jan  3 17:13:07 2017 Gregoire Renard
+## Last update Tue Jan  3 19:08:22 2017 Gregoire Renard
+##
+
+if [ -z $1 ]
+then
+    echo -e "USAGE: $0 n">&2
+    echo -e "Display n first primaryary number">&2
+    exit 1
+fi
+
+if [ ! -z $2 ]
+then
+    echo -e "USAGE: $0 n">&2
+    echo -e "Display n first primaryary number">&2
+    exit 1
+fi
+
+if [[ $1 =~ [^0-9] ]]
+then
+    echo -e "ERROR">&2
+    exit 1
+fi
+
+cpt2=2
+primary=0
+arg=$1
+let "arg = arg - 1"
+while [ "$primary" -le "$arg" ]
+do
+    verif="1"
+    cpt=2
+    while [ "$cpt" -lt "$cpt2" ]
+    do
+	let "new = cpt2 % cpt"
+	if [ "$new" -eq 0 ]
+	then
+	    verif="0"
+	fi
+	let "cpt = cpt + 1"
+    done
+    
+    if [ "$verif" -ne "0" ]
+    then
+	let "tmp = cpt2 - 2"
+	array[$tmp]=$cpt2
+	let "primary = primary + 1"
+    fi
+    let "cpt2 = cpt2 + 1"
+done
+echo -e ${array[@]}

@@ -1,0 +1,38 @@
+#!/bin/sh
+## factorial for factorial in /home/renard_e/2/SHL_2016_shell
+## 
+## Made by Gregoire Renard
+## Login   <renard_e@epitech.net>
+## 
+## Started on  Mon Jan  2 11:43:08 2017 Gregoire Renard
+## Last update Tue Jan  3 09:54:04 2017 Gregoire Renard
+##
+
+if [ -z $1 ]
+then
+    echo -e "USAGE: $0 number">&2
+    echo -e "Compute factorial of a number">&2
+    exit 1
+fi
+
+if [ ! -z $2 ]
+then
+    echo -e "USAGE: $0 number">&2
+    echo -e "Compute factorial of a number">&2
+    exit 1
+fi
+
+if [[ $1 =~ [^0-9] ]]
+then
+    echo -e "Error">&2
+    exit 1
+fi
+
+number=1
+toreach=$number
+while [ $toreach -le $1 ]
+do
+    let "number = number * toreach"
+    let "toreach = toreach + 1"
+done
+echo -e $number

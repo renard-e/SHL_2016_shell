@@ -1,0 +1,50 @@
+#!/bin/sh
+## bin2dec for bin2dec in /home/renard_e/2/SHL_2016_shell
+## 
+## Made by Gregoire Renard
+## Login   <renard_e@epitech.net>
+## 
+## Started on  Mon Jan  2 08:44:52 2017 Gregoire Renard
+## Last update Tue Jan  3 19:06:49 2017 Gregoire Renard
+##
+
+if [ -z "$1" ]
+then
+    echo -e "USAGE: $0 BinNumber" >&2
+    echo -e "Convert binary number to decimal number">&2
+    exit 1
+fi
+
+if [ ! -z "$2" ]
+then
+    echo -e "USAGE: $0 BinNumber" >&2
+    echo -e "Convert binary number to decimal number">&2
+    exit 1
+fi
+
+neg="false"
+if [[ "$1" =~ ['-'] ]]
+then
+    neg="true"
+fi
+
+if [[ "$1" =~ [^0-1-] ]]
+then
+    echo -e "Error">&2
+    exit 1
+fi
+
+
+length=$(echo ${#0})
+bin=$(echo ${0:2:$length})
+if [ $neg == "true" ]
+then
+    number=$(echo ${1:1:$length})
+    number=$(echo -e $((2#$number)))
+    echo -e "bin2dec($1)=-"$number
+    exit 0    
+else
+    echo -e "bin2dec($1)=$((2#$1))"
+    exit 0    
+fi
+

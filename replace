@@ -1,0 +1,27 @@
+#!/bin/sh
+## replace for  in /home/rodrigue.rene/Cours/Semestre_3/SCRIPT_BASH/SHL_2016_shell/rodrigue
+## 
+## Made by Rodrigue RENE
+## Login   <rodrigue.rene@epitech.net>
+## 
+## Started on  Mon Jan  2 16:38:28 2017 Rodrigue RENE
+## Last update Tue Jan  3 19:44:06 2017 Rodrigue RENE
+##
+
+if [ $# -ne 3 ]
+then
+    echo -e "USAGE: $0 original_stringfile replace_stringfile file\nReplace in file each string of original_stringfile by replace_stringfile">&2
+    exit 1
+fi
+
+while read file <&4;
+do
+    while read orig && read repl <&3
+    do
+	if [[ $file =~ $orig ]]
+	then
+	    file=${file/$orig/$repl}
+	fi
+    done <$1 3<$2
+    echo "$file"
+done 4<$3

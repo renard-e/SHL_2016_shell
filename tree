@@ -1,0 +1,21 @@
+#!/bin/sh
+## tree for tree in /home/rodrigue.rene/Cours/Semestre_3/SCRIPT_BASH/SHL_2016_shell
+## 
+## Made by Rodrigue RENE
+## Login   <rodrigue.rene@epitech.net>
+## 
+## Started on  Tue Jan  3 19:24:20 2017 Rodrigue RENE
+## Last update Tue Jan  3 19:40:10 2017 Rodrigue RENE
+##
+
+if [ $# -ne 1 ]
+then
+    echo -e "USAGE: $0 DirName">&2
+    exit 1
+fi
+
+if [ ! -d $1 ]
+then
+        echo -e "ERROR: $1 is not a directory">&2
+    exit 1
+fi

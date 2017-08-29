@@ -1,0 +1,144 @@
+#!/bin/sh
+## killall.sh for killall in /home/renard_e/2/SHL_2016_shell
+## 
+## Made by Gregoire Renard
+## Login   <renard_e@epitech.net>
+## 
+## Started on  Mon Jan  2 15:11:06 2017 Gregoire Renard
+## Last update Tue Jan  3 16:56:26 2017 Gregoire Renard
+##
+
+function user
+{
+    lengthallparams=${#allparams[@]}
+    cptallparams=1
+    
+    let "lengthallparams = lengthallparams - 1"
+    while [ $cptallparams -le $lengthallparams ]
+    do
+	ret=$(ps -eo user,pid | grep -w ${allparams[$cptallparams]})
+	if [ ! -z "$ret" ]
+	then
+	    IFS=' ' read -r -a tab <<< $ret
+	    cpt=1
+	    lengthtab=${#tab[@]}
+	    
+	    let "lengthtab = lengthtab - 1"
+	    while [ $cpt -le  $lengthtab ]
+	    do
+		kill ${tab[$cpt]}
+		let "cpt = cpt + 2"
+	    done
+	else
+	    echo -e "ERROR: user ${allparams[$cptallparams]} : no process user found">&2
+	fi
+	let "cptallparams = cptallparams + 1"
+    done
+}
+
+function pid
+{
+    length=${#allparams[@]}
+    cpt=1
+
+    let "length = length - 1"
+    while [ $cpt -le $length ]
+    do
+	ret=$(ps -eo pid | grep -w  ${allparams[$cpt]})
+	if [ "$ret" == ${allparams[$cpt]} ]
+	then
+	    kill ${allparams[$cpt]}
+	    let "cpt = cpt + 1"
+	else
+	    echo -e "ERROR: pid ${allparams[$cpt]} : no process found">&2
+	    let "cpt = cpt + 1"
+	fi
+    done
+}
+
+function prog
+{
+    lengthallparams=${#allparams[@]}
+    cptallparams=1
+    
+    let "lengthallparams = lengthallparams - 1"
+    while [ $cptallparams -le $lengthallparams ]
+    do
+	ret=$(ps -eo command,pid | grep -w --exclude=grep ${allparams[$cptallparams]})
+	
+	if [ ! -z "$ret" ]
+	then
+	    IFS=' ' read -r -a tab <<< $ret
+	    cpt=1
+	    lengthtab=${#tab[@]}
+	    
+	    let "lengthtab = lengthtab - 1"
+	    while [ $cpt -le  $lengthtab ]
+	    do
+		tmp=$cpt
+		let "tmp = tmp - 1"
+		if [ "${tab[$tmp]}" == "${allparams[$cptallparams]}" ]
+		then
+		    kill ${tab[$cpt]}
+		fi
+		let "cpt = cpt + 2"
+	    done
+	else
+	    echo -e "ERROR: command ${allparams[$cptallparams]} : no process command found">&2
+	fi
+	let "cptallparams = cptallparams + 1"
+    done
+}
+
+function all
+{
+    length=${#allparams[@]}
+    if [ $length -gt "1" ]
+    then
+    echo -e "option: -user user1 ... : Kill all processes for user1, ...
+        -pid pid1 ... : Kill a process with pid pid1, ...
+        -prog prog1 ... : Kill all processes whose program's name is prog1, ...
+        -all : Kill all processes">&2
+	exit 1
+    fi
+    ret=$(ps -eo pid)
+    IFS=' ' read -r -a tab <<< $ret
+    lengthtab=${#tab[@]}
+    cpt=1
+
+    let "lengthtab = lengthtab - 1"
+    while [ $cpt -le $lengthtab ]
+    do
+	kill ${tab[$cpt]}
+	let "cpt = cpt + 1"
+    done
+}
+
+if [ -z $1 ]
+then
+    echo -e "USAGE: $0 option">&2
+    echo -e "option: -user user1 ... : Kill all processes for user1, ...
+        -pid pid1 ... : Kill a process with pid pid1, ...
+        -prog prog1 ... : Kill all processes whose program's name is prog1, ...
+        -all : Kill all processes">&2
+    exit 1
+fi
+
+allparams=("$@")
+
+if [ $1 == "-user" ]
+then
+    user $allparams 
+elif [ $1 == "-pid" ]
+then
+    pid $allparams
+elif [ $1 == "-prog" ]
+then
+    prog $allparams
+elif [ $1 == "-all" ]
+then
+    all $allparams
+else
+    echo -e "Error">&2
+fi
+

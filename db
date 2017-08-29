@@ -1,0 +1,40 @@
+#!/bin/sh
+## db.sh for db in /home/renard_e/2/SHL_2016_shell
+## 
+## Made by Gregoire Renard
+## Login   <renard_e@epitech.net>
+## 
+## Started on  Tue Jan  3 20:26:15 2017 Gregoire Renard
+## Last update Tue Jan  3 20:44:18 2017 Gregoire Renard
+##
+
+if [ -z $1 ]
+then
+    echo -e "USAGE: $0 filename
+filename : line by line db file - each entry must be separated with a blank line
+result : 1 line by record, order by field name">&2
+    exit 1
+fi
+
+if [ ! -z $2 ]
+then
+    echo -e "USAGE: $0 filename
+filename : line by line db file - each entry must be separated with a blank line
+result : 1 line by record, order by field name">&2
+    exit 1
+fi
+
+if [ -d $1 ]
+then
+    echo -e "ERROR: $1 is not a file">&2
+    exit 1
+elif [ ! -f $1 ]
+then
+    echo -e "ERROR: $1 : file not found">&2
+    exit 1
+elif [ ! -w $1 ]
+then
+    echo -e "ERROR: /bin/sh is not writable">&2
+    exit 1
+fi
+
